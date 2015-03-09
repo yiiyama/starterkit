@@ -1,0 +1,3 @@
+# Root init files
+Rint.Logon:              rootlogon.C
+Unix.*.Root.MacroPath:   .:$MIT_ROOT_STYLE

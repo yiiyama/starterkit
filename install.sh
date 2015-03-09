@@ -57,6 +57,9 @@ cp $STARTERKIT/.rootrc $HOME/
 
 INIT=$STARTERKIT/init.sh
 echo 'CWD=$PWD' > $INIT
+echo 'export SCRAM_ARCH=slc5_amd64_gcc462' >> $INIT
+echo 'export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch' >> $INIT
+echo 'source $VO_CMS_SW_DIR/cmsset_default.sh' >> $INIT
 echo "cd $CMSSW_BASE" >> $INIT
 echo 'eval `scram runtime -sh`' >> $INIT
 echo 'cd $CWD' >> $INIT

@@ -66,6 +66,10 @@ muonpt()
   tight->Draw();
   soft->Draw("same");
 
+  // Create image file from canvas
+  c1->Print("muonpt.png");
+
+  // Save output histogram file
   outputFile->cd();
   tight->Write();
   soft->Write();

@@ -1,6 +1,7 @@
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1F.h"
+#include "TCanvas.h"
 
 unsigned const NMAX = 256;
 

@@ -65,5 +65,5 @@ sed -i "s|CMSSW_BASE|$CMSSW_BASE|" $STARTERKIT/init.sh
 
 echo "-------------------------------------------------------------------------"
 echo "Issue the following command to set the environments each time logging in:"
-echo " $ source $INIT"
+echo " $ source $STARTERKIT/init.sh"
 echo "-------------------------------------------------------------------------"

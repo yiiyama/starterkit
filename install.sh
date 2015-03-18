@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ! [[ $(uname -s) =~ el6 ]]; then
+if ! [[ $(uname -r) =~ el6 ]]; then
     echo "Please log in to an SL6 machine."
     exit 1
 fi

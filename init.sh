@@ -1,4 +1,4 @@
-if [[ $(uname -s) =~ el6 ]]; then
+if [[ $(uname -r) =~ el6 ]]; then
     CWD=$PWD
     export SCRAM_ARCH=slc6_amd64_gcc491
     export MIT_ROOT_STYLE=STARTERKIT/MitRootStyle

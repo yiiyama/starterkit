@@ -8,6 +8,7 @@
 \textheight 8.5in
 %\textwidth 6.0in
 
+\newcommand{\cpp}{\texttt{C++}\xspace}
 \newcommand{\terminal}[1]{\vspace{3pt}\texttt{\$ #1} \\}
 \newcommand{\rterminal}[2]{\vspace{3pt}\texttt{root [#1] #2} \\}
 
@@ -39,8 +40,10 @@ The goal of the starter kit (\url{https://github.com/yiiyama/starterkit.git}) is
 A successful high-energy physics experiment requires an extremely broad range of expertise (hence the extraordinary collaboration size). It is motivated by the theory of particle physics, which is arguably one of the most esoteric field of study with no obvious practical application in human society. But to execute the experiment, one must also solve highly nontrivial civil engineering problems (e.g. drilling a vertical shaft while freezing the shaft wall to stop groundwater from flooding in), build superconductive magnets, cryogenics (magnets must be cooled down), and ultra-high vacuum, develop cutting-edge particle detectors and electronics, and finally know the statistical methods to interpret the data and write a software to implement those methods. This package is intended to help you get started with the last bit, i.e., writing the software for HEP analyses.
 
 Please note that this document will contain mostly background information and not much of examples and solutions. Source code templates will be provided, but you are encouraged to modify and rewrite them as much as possible -- if things cease to work, you can always recover the original file by \\
-\terminal{git checkout HEAD \textit{path\_to\_file}}.
+\terminal{git checkout HEAD \textit{path\_to\_file}}
 However, be careful when issuing above command, since the command removes all of the changes you made.
+
+The discussion points in this document are there to bring up key points and ways of thinking. Some questions are answerable without HEP-specific knowledge, but some are not. The most important thing is to talk about these points, so come and ask frequently!
 
 \subsection*{Requirements}
 You need a command-line terminal, an SSH program, and a text editor.
@@ -48,7 +51,7 @@ You need a command-line terminal, an SSH program, and a text editor.
 \subsection*{Installation}
 You have to first log in to one of the HEP cluster machines (MIT CMS tier-3 computing cluster): \\
 \terminal{ssh user\_name@t3btch***.mit.edu}
-If your local user name is the same as your account name at T3, you can ommit the part \texttt{user\_name@}.
+If your local user name is the same as your account name at T3, you can ommit the part \texttt{user\_name@}. You need to work on a node that has Scientific Linux 6 installed as the OS. For now use \texttt{*** = 092}.
 
 Once you are in one of the cluster machines, download the starter kit package: \\
 \terminal{git clone https://github.com/yiiyama/starterkit.git}
@@ -62,13 +65,13 @@ This is a one-time procedure. No more installation is necessary in future sessio
 \setcounter{section}{0}
 
 \section{Plotting out distributions}
-We will familiarize ourselves with ROOT in this exercise. ROOT is a software library developed at CERN specifically for HEP analysis. It is written in C++ and is intended to be mixed with user applications to create softwares for specific analysis purposes, as opposed to being used as a standalone program. Thus we will be writing C++ codes using ROOT objects, and compiling them together with ROOT libraries.
+We will familiarize ourselves with ROOT in this exercise. ROOT is a software library developed at CERN specifically for HEP analysis. It is written in \cpp and is intended to be mixed with user applications to create softwares for specific analysis purposes, as opposed to being used as a standalone program. Thus we will be writing \cpp codes using ROOT objects, and compiling them together with ROOT libraries.
 
-Compilation can be done with g++ or any other C++ compiler by letting the compiler know where to find the ROOT source code and the pre-compiled ROOT binary libraries. Alternatively, one can make ROOT itself to compile your code using its internal compiler (which is actually g++): \\
+Compilation can be done with \texttt{g++} or any other \cpp compiler by letting the compiler know where to find the ROOT source code and the pre-compiled ROOT binary libraries. Alternatively, one can make ROOT itself to compile your code using its internal compiler (which is actually \texttt{g++}): \\
 \terminal{root -q your\_program.cc+}
 The plus sign at the end of the file name tells ROOT to compile the program (sometimes also called macro).
 
-If you call ROOT without the plus sign, instead of compiling and creating a binary, ROOT will try to ``interpret'' your program line-by-line as a script written in C++. ROOT has a built-in interpreter named CINT to do this. CINT is fairly reliable but has some limitations (mainly because C++ was never intended to be used as a scripting language), so this mode of operation is not recommended unless the macro is very simple.
+If you call ROOT without the plus sign, instead of compiling and creating a binary, ROOT will try to ``interpret'' your program line-by-line as a script written in \cpp. ROOT has a built-in interpreter named CINT to do this. CINT is fairly reliable but has some limitations (mainly because \cpp was never intended to be used as a scripting language), so this mode of operation is not recommended unless the macro is very simple.
 
 If ROOT is called without any argument, it will enter the interactive mode, where command-line inputs are interpreted by CINT line-by-line. ROOT will enter this mode also after the macro execution if you call ROOT without the \texttt{-q} option. This mode is useful when e.g. making small changes to plots.
 
@@ -95,12 +98,16 @@ Double-click on the \texttt{photon.n} branch. This branch holds the number of ph
 
 Now double-click on the \texttt{photon.pt} branch. The plot shows the distribution of the transverse momentum $\pt := \sqrt{p_{x}^2 + p_{y}^2}$ in GeV of all photons in the event. Transverse momentum is one of the most important variables in hadron collider experiments. Bring your mouse close to the x axis until the pointer changes to a hand icon, then click at $0$ and drag up to $100\GeV$. You will see that the first bin of the histogram has no entry. This is because experimentally we cannot reconstruct photons to arbitrary low energy; we only count photons with $\pt > 10\GeV$ in CMS.
 
+\begin{discussions}
+\item Why is transverse momentum important, when $p_{z}$ and $E$ are also measureable?
+\end{discussions}
+
 A finer control on the distributions can be achieved from the command line. On your terminal, enter \\
 \rterminal{1}{events->Draw("photon.pt>>histo\_photon\_pt(100, 0.0, 100.0)")}
 Here, \texttt{histo\_photon\_pt} is the name of the histogram object you just created, with a binning of 100 bins from 0 to 100\GeV. We will look later at how to handle histogram objects.
 
 \section{Looking at muons}
-Double-click on the \texttt{muon.n} branch. Here you see that there are no entries with $0$ \textit{or} $1$ muons. This is simply because I selected only the events that contain at least two reconstructed muon objects from the original dataset; such reduction of data with specific criteria is often called a skim. So what you have now is ``a di-muon skim of single-muon triggered dataset''. Now plot the muon pt distribution from 0 to 100\GeV from command line.
+Double-click on the \texttt{muon.n} branch. Here you see that there are no entries with $0$ \textit{or} $1$ muons. This is simply because I selected only the events that contain at least two reconstructed muon objects from the original dataset; such reduction of data with specific criteria is often called a skim. So what you have now is ``a dimuon skim of single-muon triggered dataset''. Now plot the muon pt distribution from 0 to 100\GeV from command line.
 
 \begin{discussions}
 \item In what way(s) does the muon \pt distribution look different from the photon \pt distribution?
@@ -115,11 +122,38 @@ Next, plot the \pt of the muons that pass the selection criteria. On your termin
 \rterminal{2}{events->Draw("muon.pt>>histo\_muon\_pt(100, 0.0, 100.0)", "muon.isTight")}
 The second argument to the Draw function (which is empty by default) specifies which muons should be used to make the histogram. Try with the \texttt{isSoft} flag too.
 
+You can overlay the results of two \texttt{Draw} commands for comparison. \\
+\rterminal{3}{events->Draw("muon.pt>>histo\_muon\_pt\_soft(100, 0.0, 100.0)", "muon.isSoft", "same")}
+The keyword same in the third argument tells ROOT to draw the new histogram (which must have a name different from the previous one) on the same ``canvas''. To further make the comparison easier, we can change the line color, line style, fill color, etc. of the histograms. \\
+\rterminal{4}{TH1* soft = gDirectory->Get("histo\_muon\_pt\_soft")}
+\rterminal{5}{soft->SetLineColor(kRed)}
+The first line retrieves the histogram object that was created in the memory and creates a handle (variable \texttt{soft}) for it. The second line calls the function that sets the line color on this object. The line color of the soft muon distribution should now change to red once you bring the focus back to the TBrowser window.
+
 \begin{discussions}
 \item What is the difference in the \pt distributions for two different selections?
 \item From this observation, what can you say about the two criteria?
 \end{discussions}
 
+Quit root by \\
+\rterminal{6}{.q}
+
 \section{Going beyond \texttt{TTree::Draw}}
+If anything more complicated than just plotting the distributions of variables possibly with some simple selections is desired, one must write a \cpp code. The \cpp code version of the last example in the last exercise is written in \texttt{muonpt.cc}. Run it with \\
+\terminal{root muonpt.cc+}
+
+As you can see in the file, this version requires quite a bit of overhead before reaching the body of the program, which is to loop over the entries in the ntuples. On the other hand, you have full control of what to do with the branches as promised, since all branch values can be assigned to standard \cpp variables.
+
+\begin{discussions}
+\item Add $p_{x}$ and $p_{y}$ variables to the code and plot the \pt calculated for each muon from these two variables. Confirm that the result is identical to what you get from simply plotting the \pt variable.
+\end{discussions}
+
+\section{Dimuon invariant mass}
+Starting from the \texttt{muonpt.cc} example, write a code that plots the distribution of the invariant mass of all muon pairs found in each event.
+
+\begin{discussions}
+\item Why is invariant mass a more interesting quantity than, say, the energy of the dimuon system?
+\item How do we loop over pairs of muons?
+\item How do we implement the calculation of invariant mass?
+\end{discussions}
 
 \end{document}

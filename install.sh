@@ -16,13 +16,13 @@ export SCRAM_ARCH=slc6_amd64_gcc491
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch
 source $VO_CMS_SW_DIR/cmsset_default.sh
 
-scram p CMSSW CMSSW_7_3_2
+scram p CMSSW CMSSW_7_4_6
 if [ $? -ne 0 ]; then
     echo "Failed to set up CMSSW. Exiting"
     exit 1
 fi
 
-export CMSSW_BASE=$PWD/CMSSW_7_3_2
+export CMSSW_BASE=$PWD/CMSSW_7_4_6
 cd $CMSSW_BASE
 eval `scram runtime -sh`
 

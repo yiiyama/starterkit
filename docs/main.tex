@@ -37,7 +37,7 @@
 \section*{Before you begin}
 The goal of the starter kit (\url{https://github.com/yiiyama/starterkit.git}) is to introduce the basic tools and ideas in high-energy physics analyses to intereted learners. We hope you enjoy the exercises and become comfortable with the basics by the time you are done!
 
-A successful high-energy physics experiment requires an extremely broad range of expertise (hence the extraordinary collaboration size). It is motivated by the theory of particle physics, which is arguably one of the most esoteric field of study with no obvious practical application in human society. But to execute the experiment, one must also solve highly nontrivial civil engineering problems (e.g. drilling a vertical shaft while freezing the shaft wall to stop groundwater from flooding in), build superconductive magnets, cryogenics (magnets must be cooled down), and ultra-high vacuum, develop cutting-edge particle detectors and electronics, and finally know the statistical methods to interpret the data and write a software to implement those methods. This package is intended to help you get started with the last bit, i.e., writing the software for HEP analyses.
+A successful high-energy physics experiment requires an extremely broad range of expertise (hence the extraordinary collaboration size). It is motivated by the theory of particle physics, which is arguably one of the most esoteric field of study with no obvious practical application in human society. But to execute the experiment, one must also solve highly nontrivial civil engineering problems (e.g. drilling a vertical shaft while freezing the shaft wall to stop groundwater from flooding in), build superconducting magnets, cryogenics (magnets must be cooled down), and ultra-high vacuum, develop cutting-edge particle detectors and electronics, and finally know the statistical methods to interpret the data and write a software to implement those methods. This package is intended to help you get started with the last bit, i.e., writing the software for HEP analyses.
 
 Please note that this document will contain mostly background information and not much of examples and solutions. Source code templates will be provided, but you are encouraged to modify and rewrite them as much as possible -- if things cease to work, you can always recover the original file by \\
 \terminal{git checkout HEAD \textit{path\_to\_file}}
@@ -46,12 +46,17 @@ However, be careful when issuing above command, since the command removes all of
 The discussion points in this document are there to bring up key points and ways of thinking. Some questions are answerable without HEP-specific knowledge, but some are not. The most important thing is to talk about these points, so come and ask frequently!
 
 \subsection*{Requirements}
-You need a command-line terminal, an SSH program, and a text editor.
+You need a command-line terminal, an SSH program, and a text editor. Alternatively you can use a remote-desktop application (e.g. X2Go) which lets you skip the logging in part.
 
 \subsection*{Installation}
-You have to first log in to one of the HEP cluster machines (MIT CMS tier-3 computing cluster): \\
-\terminal{ssh user\_name@t3btch***.mit.edu}
-If your local user name is the same as your account name at T3, you can ommit the part \texttt{user\_name@}. You need to work on a node that has Scientific Linux 6 installed as the OS. For now use \texttt{*** = 092}.
+\begin{itemize}
+\item Working from a local terminal: \\
+  You have to first log in to one of the HEP cluster machines (MIT CMS tier-3 computing cluster): \\
+  \terminal{ssh user\_name@t3btch***.mit.edu}
+  If your local user name is the same as your account name at T3, you can ommit the part \texttt{user\_name@}. You need to work on a node that has Scientific Linux 6 installed as the OS. For now use \texttt{*** = 112}.
+\item Working with a remote desktop: \\
+  Start the remote desktop on one of the \texttt{t3btch***.mit.edu} machines, open up a terminal at Applications > System Tools > Terminal.
+\end{itemize}
 
 Once you are in one of the cluster machines, download the starter kit package: \\
 \terminal{git clone https://github.com/yiiyama/starterkit.git}
@@ -87,11 +92,12 @@ On the left-hand side of the TBrowser, you will a folder icon with title \texttt
 \item What is a muon? What are some of its key properties? How do we detect and reconstruct muons?
 \end{discussions}
 
-The columns of the spreadsheet are called branches in ROOT, and represent various measurable quantities in the detector. Since it is very difficult to deal with raw outputs of the detector electronics, ntuple files like the current one often contain highly processed quantities which are ready for physics analysis. Double-click on the \texttt{events} icon and you see that this ntuples contain branches for momentum ($p_{x}$, $p_{y}$, $p_{z}$, $E$) of four kinds of objects (photon, electron, muon, and jet) plus some other variables that will be explained shortly. Note that these are reconstructed \textit{objects} and are not necessarily true photons, electrons, muons, and jets. We never know with 100\% certainty what particle caused specific detector response, but by combining information from various parts of the detector, we can guess what came out of the interaction point.
+The columns of the spreadsheet are called branches in ROOT, and represent various measurable quantities in the detector. Since it is very difficult to deal with raw outputs of the detector electronics, ntuple files like the current one often contain highly processed (``reconstructed'') quantities which are ready for physics analysis. Double-click on the \texttt{events} icon and you see that this ntuples contain branches for momentum ($p_{x}$, $p_{y}$, $p_{z}$, $E$) of four kinds of objects (photon, electron, muon, and jet) plus some other variables that will be explained shortly. Note that these are reconstructed \textit{objects} and are not necessarily true photons, electrons, muons, and jets. We never know with 100\% certainty what particle caused specific detector response, but by combining information from various parts of the detector, we can guess what came out of the interaction point.
 
 \begin{discussions}
 \item What is a jet?
-\item How are different objects reconstructed? How are momenta of the objects measured?
+\item How are different objects reconstructed?
+\item How are momenta of the objects measured?
 \end{discussions}
 
 Double-click on the \texttt{photon.n} branch. This branch holds the number of photon objects reconstructed in the event. The distribution of this variable appears on the right-hand side of the window. The first bin of the histogram corresponds to $0$. As you can see, majority of the events do not have a photon object.
